@@ -10,7 +10,10 @@
 
 namespace hipanel\modules\certificate\menus;
 
+use hipanel\widgets\AjaxModalWithTemplatedButton;
 use hiqdev\yii2\menus\Menu;
+use yii\helpers\Html;
+use yii\web\JsExpression;
 use Yii;
 
 class CertificateActionsMenu extends Menu
@@ -77,6 +80,50 @@ class CertificateActionsMenu extends Menu
                 ],
                 'encode' => false,
                 'visible' => $this->model->isValidationResendable(),
+            ],
+            'cancel' => [
+                'label' => AjaxModalWithTemplatedButton::widget([
+                    'ajaxModalOptions' => [
+                        'id' => "cancel-certificate-modal1-{$this->model->id}",
+                        'bulkPage' => true,
+                        'header' => Html::tag('h4', Yii::t('hipanel:certificate', 'Confirm certificate cancel'), ['class' => 'label-danger']),
+                        // 'headerOptions' => ['class' => 'label-danger'],
+                        'scenario' => 'default',
+                        'actionUrl' => ['cancel', 'id' => $this->model->id],
+                        'handleSubmit' => ['cancel', 'id' => $this->model->id],
+                        'toggleButton' => [
+                            'tag' => 'a',
+                            'label' => Html::tag('i', null, ['class' => 'fa fa-fw fa-trash-o']) . '&nbsp;' . Yii::t('hipanel', 'Cancel'),
+                            'style' => 'cursor: pointer;',
+                            'onClick' => new JsExpression("$(this).parents('.menu-button').find('.popover').popover('hide');"),
+                        ],
+                    ],
+                    'toggleButtonTemplate' => '{toggleButton}',
+                ]),
+                'encode' => false,
+                'visible' => Yii::$app->user->can('certificate.update'),
+            ],
+            'delete' => [
+                'label' => AjaxModalWithTemplatedButton::widget([
+                    'ajaxModalOptions' => [
+                        'id' => "cancel-certificate-modal1-{$this->model->id}",
+                        'bulkPage' => true,
+                        'header' => Html::tag('h4', Yii::t('hipanel:certificate', 'Confirm certificate delete'), ['class' => 'label-danger']),
+                        'headerOptions' => ['class' => 'label-danger'],
+                        'scenario' => 'default',
+                        'actionUrl' => ['delete', 'id' => $this->model->id],
+                        'handleSubmit' => ['delete', 'id' => $this->model->id],
+                        'toggleButton' => [
+                            'tag' => 'a',
+                            'label' => Html::tag('i', null, ['class' => 'fa fa-fw fa-trash-o']) . '&nbsp;' . Yii::t('hipanel', 'Delete'),
+                            'style' => 'cursor: pointer;',
+                            'onClick' => new JsExpression("$(this).parents('.menu-button').find('.popover').popover('hide');"),
+                        ],
+                    ],
+                    'toggleButtonTemplate' => '{toggleButton}',
+                ]),
+                'encode' => false,
+                'visible' => Yii::$app->user->can('certificate.delete') && $this->model->isDeleteable(),
             ],
         ];
     }

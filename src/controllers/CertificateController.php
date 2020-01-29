@@ -98,9 +98,11 @@ class CertificateController extends CrudController
                 'error' => Yii::t('hipanel:certificate', 'Error deleting'),
             ],
             'cancel' => [
-                'class' => SmartPerformAction::class,
+                'class' => SmartUpdateAction::class,
                 'success' => Yii::t('hipanel:certificate', 'Certificate canceled'),
                 'error' => Yii::t('hipanel:certificate', 'Error canceling'),
+                'view' => 'modal/cancel',
+                'scenario' => 'cancel',
             ],
             'add-to-cart-renew' => [
                 'class' => AddToCartAction::class,

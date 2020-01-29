@@ -49,32 +49,6 @@ class CertificateDetailMenu extends AbstractDetailMenu
             [
                 'label' => ModalButton::widget([
                     'model' => $this->model,
-                    'scenario' => 'cancel',
-                    'button' => [
-                        'label' => '<i class="fa fa-fw fa-trash-o"></i> ' . Yii::t('hipanel', 'Cancel'),
-                    ],
-                    'modal' => [
-                        'header' => Html::tag('h4', Yii::t('hipanel:certificate', 'Confirm certificate cancel')),
-                        'headerOptions' => ['class' => 'label-danger'],
-                        'footer' => [
-                            'label' => Yii::t('hipanel:certificate', 'Cancel certificate'),
-                            'data-loading-text' => Yii::t('hipanel', 'Canceling...'),
-                            'class' => 'btn btn-danger btn-flat',
-                        ],
-                    ],
-                    'body' => function ($model, $widget) {
-                        echo Yii::t('hipanel:certificate', 'Certificate will be immediately revoked without any refunds or ability to reissue this certificate');
-                        echo '. ';
-                        echo Yii::t('hipanel:certificate', 'Are you sure to cancel certificate for {name}?', ['name' => $this->model->name]);
-                        echo $widget->form->field($model, 'reason');
-                    },
-                ]),
-                'encode' => false,
-                'visible' => Yii::$app->user->can('certificate.update') && $this->model->isCancelable(),
-            ],
-            [
-                'label' => ModalButton::widget([
-                    'model' => $this->model,
                     'scenario' => 'delete',
                     'button' => [
                         'label' => '<i class="fa fa-fw fa-trash-o"></i> ' . Yii::t('hipanel', 'Delete'),
